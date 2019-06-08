@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import django_heroku
 import os
+import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +41,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'user',
     'booking',
-    'flight'
+    'flight',
+    'django_nose',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -51,6 +54,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+# Use nose to run all tests
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+
+# Tell nose to measure coverage on assessment apps
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-xml'
+   
 ]
 
 ROOT_URLCONF = 'urls'
@@ -70,6 +85,29 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_RENDERER_CLASSES': (
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        # Any other renders
+    ),
+
+    'DEFAULT_PARSER_CLASSES': (
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+        # Any other parsers
+    ),
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+
+   'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+   'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+   'PAGE_SIZE': 20
+}
 
 WSGI_APPLICATION = 'wsgi.application'
 
@@ -142,7 +180,7 @@ JWT_AUTH = {
     'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
 
     'JWT_RESPONSE_PAYLOAD_HANDLER':
-    'assessment.helpers.token_handler.jwt_response_payload_handler',
+    'jwt_settings.jwt_response_payload_handler',
 
     'JWT_SECRET_KEY': SECRET_KEY,
     'JWT_GET_USER_SECRET_KEY': None,
@@ -163,3 +201,5 @@ JWT_AUTH = {
     'JWT_AUTH_COOKIE': None,
 
 }
+CORS_ORIGIN_ALLOW_ALL = True
+django_heroku.settings(locals())
