@@ -14,12 +14,28 @@ from booking.utility import send_mail
 
 class BookingViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows users to be viewed or edited. 
     """
     permission_classes = (IsAuthenticated,)
     serializer_class = BookingSerializer
-    queryset = Booking.objects.all()
     
+    def get_queryset(self):
+        params = self.request.query_params
+        flight_date = params.get('flightDate')
+        user_id = params.get('userId')
+        location = params.get('location')
+        flight_id = params.get('flightId')
+        queryset = Booking.objects.filter()
+        if flight_date:
+            queryset = queryset.filter(flight_date=flight_date)
+        if location:
+            queryset = queryset.filter(location=location) 
+        if user_id:
+           queryset = queryset.filter(user_id=user_id)
+        if flight_id:
+           queryset = queryset.filter(flight_id=flight_id)
+        return queryset
+
     def get_available_flight(self):
         flights = Flight.objects.all()
         flight_date=self.request.data.get('flight_date')
