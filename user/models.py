@@ -6,6 +6,7 @@ import datetime
 
 class Profile(BaseModel):
     image = models.CharField(max_length=255, blank=True, null=True)
+    image_public_id = models.CharField(max_length=255, blank=True, null=True)
     country = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)

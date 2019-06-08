@@ -6,4 +6,5 @@ error_messages = {
      'not_found': 'Not found',
      'page_error': 'Page not found',
      'object_not_found': '{} with the specified id is not found',
+     'file_error': 'Please select file to upload'
 }

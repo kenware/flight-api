@@ -42,6 +42,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         profile.country = profile_data.get('country', profile.country)
         profile.city = profile_data.get('city', profile.city)
         profile.address = profile_data.get('address', profile.address)
+        profile.image = profile_data.get('image', profile.image)
         profile.save()
         return instance 
 
