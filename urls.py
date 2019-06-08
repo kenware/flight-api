@@ -14,9 +14,17 @@ from user.views import UserViewSet
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, base_name='users')
 
+upload = UserViewSet.as_view({
+    'post': 'upload',
+    'put': 'upload',
+    'patch': 'upload',
+    'delete': 'destroy_upload'
+})
+
 urlpatterns = [
     path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path(r'api/v1/login/', obtain_jwt_token),
     path('admin/', admin.site.urls),
+    path(r'api/v1/users/upload/', upload, name='upload'),
     path(r'api/v1/', include(router.urls)),
 ]
