@@ -12,5 +12,5 @@ class Profile(BaseModel):
     address = models.CharField(max_length=255, blank=True, null=True)
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
 
-    def __str__(self):
+    def __unicode__(self): 
         return self.country
