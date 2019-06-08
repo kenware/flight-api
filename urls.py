@@ -11,10 +11,12 @@ from django.urls import path
 # Views
 from user.views import UserViewSet
 from flight.views import FlightViewSet
+from booking.views import BookingViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, base_name='users')
 router.register(r'flight', FlightViewSet, base_name='flight')
+router.register(r'booking', BookingViewSet, base_name='booking')
 
 upload = UserViewSet.as_view({
     'post': 'upload',
