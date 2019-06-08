@@ -6,7 +6,7 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 
 # local modules
-from .utility import generate_token, validate_password, validate_email
+from user.utility import generate_token, validate_password, validate_email
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
