@@ -1,0 +1,55 @@
+git default: &defaults
+  docker:
+    # specify the version you desire here
+    - image: circleci/python:3.6.5
+      environment:
+        flight-api_PATH: /home/circleci/repo
+        DATABASE_NAME: circlecidb
+        DATABASE_USER: postgres
+        DATABASE_PASSWORD: ''
+        DATABASE_PORT: 5432
+        DATABASE_HOST: localhost
+    - image: circleci/postgres:9.6-alpine
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_DB: circlecidb
+        POSTGRES_PASSWORD: '' 
+
+  working_directory: ~/repo
+
+version: 2
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+
+      - run:
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter 
+
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            python manage.py test
+            coveralls
