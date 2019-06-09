@@ -1,0 +1,12 @@
+version: "2"
+plugins:
+ pep8:
+  enabled: false
+exclude_patterns:
+- "user/migrations/"
+- "user/tests/"
+- "booking/migrations/"
+- "booking/tests/"
+- "flight/migrations/"
+- "flight/tests/"
+
