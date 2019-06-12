@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'user',
-    'booking',
+    'booking.apps.BookingConfig',
     'flight',
     'django_nose',
     'corsheaders'
