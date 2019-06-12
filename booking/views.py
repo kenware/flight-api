@@ -53,5 +53,9 @@ class BookingViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        send_mail(user,serializer.data)
+        message = {
+          'title': 'Booking Completed',
+          'subject': 'Flight Booking Successful'
+        }
+        send_mail(user,serializer.data, message)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
