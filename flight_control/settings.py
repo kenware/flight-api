@@ -40,9 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'user',
-    'booking.apps.BookingConfig',
-    'flight',
+    'flight_control.user',
+    'flight_control.booking.apps.BookingConfig',
+    'flight_control.flight',
     'django_nose',
     'corsheaders'
 ]
@@ -69,7 +69,7 @@ NOSE_ARGS = [
    
 ]
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'flight_control.urls'
 
 TEMPLATES = [
     {
@@ -110,7 +110,7 @@ REST_FRAMEWORK = {
    'PAGE_SIZE': 20
 }
 
-WSGI_APPLICATION = 'wsgi.application'
+WSGI_APPLICATION = 'flight_control.wsgi.application'
 
 
 # Database
@@ -181,7 +181,7 @@ JWT_AUTH = {
     'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
 
     'JWT_RESPONSE_PAYLOAD_HANDLER':
-    'jwt_settings.jwt_response_payload_handler',
+    'flight_control.jwt_settings.jwt_response_payload_handler',
 
     'JWT_SECRET_KEY': SECRET_KEY,
     'JWT_GET_USER_SECRET_KEY': None,
@@ -211,3 +211,9 @@ cloudinary.config(
 
 CORS_ORIGIN_ALLOW_ALL = True
 django_heroku.settings(locals())
+
+CELERY_BROKER_URL = 'redis://localhost:6379'  
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'  
+CELERY_ACCEPT_CONTENT = ['application/json']  
+CELERY_RESULT_SERIALIZER = 'json'  
+CELERY_TASK_SERIALIZER = 'json' 

@@ -6,11 +6,11 @@ from rest_framework.response import Response
 # Local modules.
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
-from booking.serializers import BookingSerializer
-from booking.models import Booking
-from flight.models import Flight
-from user.utility import raises_error
-from booking.utility import send_mail
+from flight_control.booking.serializers import BookingSerializer
+from flight_control.booking.models import Booking
+from flight_control.flight.models import Flight
+from flight_control.user.utility import raises_error
+from flight_control.booking.tasks import send_mail
 
 class BookingViewSet(viewsets.ModelViewSet):
     """
@@ -53,9 +53,12 @@ class BookingViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        message = {
+        message = { 
           'title': 'Booking Completed',
           'subject': 'Flight Booking Successful'
         }
-        send_mail(user,serializer.data, message)
+        
+        user_data = { 'email': user.email, 'username': user.username }
+        send_mail.delay(user_data,serializer.data, message)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+     

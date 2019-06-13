@@ -9,9 +9,9 @@ from django.contrib import admin
 from django.urls import path
 
 # Views
-from user.views import UserViewSet
-from flight.views import FlightViewSet
-from booking.views import BookingViewSet
+from flight_control.user.views import UserViewSet
+from flight_control.flight.views import FlightViewSet
+from flight_control.booking.views import BookingViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, base_name='users')

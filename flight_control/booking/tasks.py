@@ -1,25 +1,28 @@
 
+from __future__ import absolute_import, unicode_literals
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-from booking.template import template
+from flight_control.booking.template import template
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
-from booking.models import Booking
-from booking.serializers import BookingSerializer
+from flight_control.booking.models import Booking
+from flight_control.booking.serializers import BookingSerializer
 
+from celery import shared_task
 
 def task_runner():
     scheduler = BackgroundScheduler()
     scheduler.add_job(Booking_notification, 'interval', hours=5)
     scheduler.start()
 
+@shared_task
 def send_mail(user, booking, message):
-    message = Mail(
+    message = Mail( 
         from_email='no-reply@flightTrip.com',
-        to_emails=user.email,
+        to_emails=user['email'],
         subject=message['subject'],
-        html_content=template.format(message['subject'], message['title'],user.username, \
+        html_content=template.format(message['subject'], message['title'],user['username'], \
             booking['ref'], booking['flight_date'], booking['location'], booking['flight_seat'], booking['flight']['name']))
     try:
         sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
@@ -43,4 +46,4 @@ def Booking_notification():
     print('sending booking notification email to ' + str(count) + ' user/users')
     for booking in bookings:
         booking_data = BookingSerializer(booking).data
-        send_mail(booking.user, booking_data, message)
+        send_mail.delay(booking_data['user'], booking_data, message)

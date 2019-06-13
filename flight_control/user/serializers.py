@@ -1,12 +1,12 @@
 # Liberaries
 from django.contrib.auth.models import User, Group
-from user.models import Profile
+from flight_control.user.models import Profile
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 
 # local modules
-from user.utility import generate_token, validate_password, validate_email
+from flight_control.user.utility import generate_token, validate_password, validate_email
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -26,6 +26,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         email = validated_data.get('email')
         validate_email(email)
+        print(validated_data)
         user = User.objects.create(**validated_data)
         Profile.objects.create(user=user)
         return user

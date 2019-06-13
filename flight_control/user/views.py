@@ -6,14 +6,15 @@ from rest_framework import viewsets
 from functools import partial
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, JSONParser
+from djangorestframework_camel_case.parser import CamelCaseJSONParser
 import cloudinary.uploader
 
 # Local modules.
 from django.contrib.auth.models import User
-from user.utility import generate_token, AllowedUserPermission
-from user.serializers import UserSerializer
-from user.models import Profile
-from user.utility import raises_error
+from flight_control.user.utility import generate_token, AllowedUserPermission
+from flight_control.user.serializers import UserSerializer
+from flight_control.user.models import Profile
+from flight_control.user.utility import raises_error
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -25,11 +26,11 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     parser_classes = (
     MultiPartParser,
-    JSONParser,
+    CamelCaseJSONParser
     )
 
     def create(self, request):
-
+        print(request.data)
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()

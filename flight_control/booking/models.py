@@ -1,8 +1,8 @@
 from django.db import models
-from user.base_model import BaseModel
+from flight_control.user.base_model import BaseModel
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
-from flight.models import Flight
+from flight_control.flight.models import Flight
 
 import datetime
 

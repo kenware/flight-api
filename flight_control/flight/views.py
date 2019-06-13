@@ -3,9 +3,9 @@ from rest_framework import viewsets
 
 # Local modules.
 from django.contrib.auth.models import User
-from user.utility import AdminAuthenticatedPermission
-from flight.serializers import FlightSerializer
-from flight.models import Flight
+from flight_control.user.utility import AdminAuthenticatedPermission
+from flight_control.flight.serializers import FlightSerializer
+from flight_control.flight.models import Flight
 
 
 class FlightViewSet(viewsets.ModelViewSet):

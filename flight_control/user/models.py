@@ -1,5 +1,5 @@
 from django.db import models
-from user.base_model import BaseModel
+from flight_control.user.base_model import BaseModel
 from django.contrib.auth.models import User
 
 import datetime

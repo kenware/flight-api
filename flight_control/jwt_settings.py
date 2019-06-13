@@ -1,5 +1,5 @@
 # user schema
-from user.serializers import UserSerializer
+from flight_control.user.serializers import UserSerializer
 
 def jwt_response_payload_handler(token, user=None, request=None):
     """ custmoze jwt payload data
