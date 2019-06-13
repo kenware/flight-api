@@ -65,8 +65,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Tell nose to measure coverage on assessment apps
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-xml'
-   
+    '--cover-xml' 
 ]
 
 ROOT_URLCONF = 'flight_control.urls'
