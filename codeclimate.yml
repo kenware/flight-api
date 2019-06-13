@@ -3,10 +3,10 @@ plugins:
  pep8:
   enabled: false
 exclude_patterns:
-- "user/migrations/"
-- "user/tests/"
-- "booking/migrations/"
-- "booking/tests/"
-- "flight/migrations/"
-- "flight/tests/"
+- "flight_control/user/migrations/"
+- "flight_control/user/tests/"
+- "flight_control/booking/migrations/"
+- "flight_control/booking/tests/"
+- "flight_control/flight/migrations/"
+- "flight_control/flight/tests/"
 

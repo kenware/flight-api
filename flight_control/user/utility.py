@@ -5,7 +5,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
-from user.constants import error_messages
+from flight_control.user.constants import error_messages
 
 def validate_password(value):  
    if len(value)<4 or not value:
@@ -66,20 +66,6 @@ def custom_get_object_or_404(model, id):
         raises_error('object_not_found', 404, model.__name__)
     return objects
 
-def raises(error_key, status_code, *args, **kwargs):
-    """
-    Raises a serialization error
-
-    Parameters:
-        error_key (str): the key for accessing the correct error message
-        args (*): variable number of arguments
-        kwargs (**): variable number of keyword arguments
-    """
-
-    raise serializers.ValidationError(
-         error_messages[error_key].format(*args, **kwargs),
-         status_code)
-
 def raises_error(error_key, status_code, *args, **kwargs):
     """
     Raises a serialization error
@@ -93,3 +79,17 @@ def raises_error(error_key, status_code, *args, **kwargs):
     raise serializers.ValidationError({
          'message': error_messages[error_key].format(*args, **kwargs),
          'status': 'error'}, status_code)
+
+def raises(error_key, status_code, *args, **kwargs):
+    """
+    Raises a serialization error
+
+    Parameters:
+        error_key (str): the key for accessing the correct error message
+        args (*): variable number of arguments
+        kwargs (**): variable number of keyword arguments
+    """
+
+    raise serializers.ValidationError(
+         error_messages[error_key].format(*args, **kwargs),
+         status_code)

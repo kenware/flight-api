@@ -1,11 +1,11 @@
 # Liberaries
 from django.contrib.auth.models import User, Group
-from user.models import Profile
-from booking.models import Booking
+from flight_control.user.models import Profile
+from flight_control.booking.models import Booking
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
-from flight.serializers import FlightSerializer
-from user.serializers import UserSerializer
+from flight_control.flight.serializers import FlightSerializer
+from flight_control.user.serializers import UserSerializer
 
 
 class BookingSerializer(serializers.HyperlinkedModelSerializer):

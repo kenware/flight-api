@@ -1,5 +1,5 @@
 
-from flight.models import Flight
+from flight_control.flight.models import Flight
 from rest_framework import serializers
 
 class FlightSerializer(serializers.HyperlinkedModelSerializer):
