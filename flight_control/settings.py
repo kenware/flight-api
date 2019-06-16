@@ -13,6 +13,7 @@ import django_heroku
 import os
 import datetime
 import cloudinary
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -116,16 +117,8 @@ WSGI_APPLICATION = 'flight_control.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DATABASE_NAME', ''),
-        'USER': os.environ.get('DATABASE_USER', ''),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
-        'HOST': os.environ.get('DATABASE_HOST', ''),
-        'PORT': os.environ.get('DATABASE_PORT', ''),
-    }
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_NAME', ''))
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -203,16 +196,17 @@ JWT_AUTH = {
 }
 
 cloudinary.config( 
-  cloud_name = "more-recipes", 
-  api_key = "127278553653283", 
-  api_secret = "XUBlnwpJ2dbSHJzPZu-vTWxgob4" 
+  cloud_name = os.environ.get('CLOUD_NAME', ''), 
+  api_key = os.environ.get('API_KEY', ''), 
+  api_secret = os.environ.get('API_SECRET', '') 
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
 django_heroku.settings(locals())
+del DATABASES['default']['OPTIONS']['sslmode']
 
-CELERY_BROKER_URL = 'redis://localhost:6379'  
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'  
+CELERY_BROKER_URL = os.environ.get('REDIS_URL', '')
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', '') 
 CELERY_ACCEPT_CONTENT = ['application/json']  
 CELERY_RESULT_SERIALIZER = 'json'  
 CELERY_TASK_SERIALIZER = 'json' 
